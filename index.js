@@ -42,7 +42,7 @@ app.get('/', async (req, res) => {
     const {result:results} = await container.items.query("SELECT * FROM c WHERE c.post_id='BwrBVceAQrb'", {enableCrossPartitionQuery: true}).toArray();
     console.log(results);
     end_of_cosmos = Date.now()
-    console.log(end_of_cosmos-start_of_cosmos)
+    console.log("cosmos time: "+end_of_cosmos-start_of_cosmos)
     start_of_mongo = Date.now()
     MongoClient.connect(url, (err, db) => {
         if (err)
@@ -53,7 +53,7 @@ app.get('/', async (req, res) => {
           throw err;
         db.close();
         end_of_mongo = Date.now();
-        console.log(end_of_mongo - start_of_mongo);
+        console.log("mongoDB time: " +end_of_mongo - start_of_mongo);
       });
       });
     
