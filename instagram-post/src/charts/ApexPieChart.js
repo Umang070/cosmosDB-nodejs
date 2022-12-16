@@ -6,9 +6,6 @@ const ApexPieChart = (props) => {
       width: 380,
       type: "pie",
     },
-    title: {
-      text: "Followers count distribution",
-    },
     labels: Object.keys(props.followersWiseUsers),
     responsive: [
       {
@@ -28,12 +25,17 @@ const ApexPieChart = (props) => {
   const series = Object.values(props.followersWiseUsers);
 
   return (
-    <div id="chart">
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       <ReactApexChart
         options={options}
         series={series}
         type="pie"
-        width={380}
+        width={320}
       />
     </div>
   );

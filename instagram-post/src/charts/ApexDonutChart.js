@@ -5,9 +5,6 @@ const ApexDonutChart = (props) => {
     chart: {
       type: "donut",
     },
-    title: {
-      text: "Type of post",
-    },
     labels: ["Image", "Video"],
     dataLabels: {
       enabled: true,

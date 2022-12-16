@@ -6,13 +6,25 @@ import ApexComboChart from "../charts/ApexComboChart";
 import ApexDonutChart from "../charts/ApexDonutChart";
 import ApexLineChart from "../charts/ApexLineChart";
 import ApexPieChart from "../charts/ApexPieChart";
+import {
+  EuiFlexItem,
+  EuiFlexGroup,
+  EuiPanel,
+  EuiCode,
+  EuiText,
+  EuiFlexGrid,
+} from "@elastic/eui";
 const Home = () => {
   const [postList, setPostList] = useState([]);
 
   const [categoryData, setCategoryList] = useState({ series: [], lables: [] });
-  const [countryWisePosts, setCountryWisePost] = useState({});
+  const [countryWiseUsers, setCountryWiseUsers] = useState({});
   const [followersWiseUsers, setFollowersWiseUsers] = useState({});
   const [profileData, setProfileData] = useState({});
+  const [businessAccCount, setBusinessAccCount] = useState(0);
+  const [nonBusinessAccCount, setNonBusinessAccCount] = useState(0);
+  const [countryWisePostCount, setCountryWisePostCount] = useState({});
+
   const fetchData = async () => {
     const config = {
       method: "GET",
@@ -37,16 +49,25 @@ const Home = () => {
       },
       validateStatus: () => true,
     };
-    const countryWisePostRes = await api.get("/post/getCountryPosts", config);
-    const countryWisePostsCount = {};
-    countryWisePostRes.data?.forEach((obj) => {
-      if (!countryWisePostsCount[obj.dir_country_name]) {
-        countryWisePostsCount[obj.dir_country_name] = obj["$1"];
+    const countryWiseUserRes = await api.get("/post/getCountryUsers", config);
+    const countryWiseUserCount = {};
+    const countryWistCount = {};
+    countryWiseUserRes.data?.forEach((obj) => {
+      if (!countryWiseUserCount[obj.dir_country_name]) {
+        countryWiseUserCount[obj.dir_country_name] = 1;
+        countryWisePostCount[obj.dir_country_name] = obj.post_count;
       } else {
-        countryWisePostsCount[obj.dir_country_name] += obj["$1"];
+        countryWiseUserCount[obj.dir_country_name] += 1;
+        countryWisePostCount[obj.dir_country_name] += obj.post_count;
       }
     });
-    setCountryWisePost(countryWisePostsCount);
+    setCountryWiseUsers(countryWiseUserCount);
+    setCountryWisePostCount(countryWisePostCount);
+    console.log(
+      "CountryWise data ",
+      countryWiseUserCount,
+      countryWisePostCount
+    );
   };
   const fetchInfluencers = async () => {
     const config = {
@@ -87,32 +108,183 @@ const Home = () => {
     });
     setFollowersWiseUsers(followersWiseCount);
     setProfileData(profileInfo);
+    console.log("Profile info:", profileInfo);
+  };
+  const fetchAccountType = async () => {
+    const config = {
+      method: "GET",
+      header: {
+        "Content-Type": "application/json",
+      },
+      validateStatus: () => true,
+    };
+    const accountTypeRes = await api.get("/post/getAccountType", config);
+    let business_acc = 0;
+    let non_business_acc = 0;
+    accountTypeRes.data.forEach(({ is_business_account }) => {
+      if (is_business_account) {
+        business_acc += 1;
+      } else {
+        non_business_acc += 1;
+      }
+    });
+    console.log(non_business_acc, business_acc);
+    setBusinessAccCount(business_acc);
+    setNonBusinessAccCount(non_business_acc);
   };
   useEffect(() => {
     console.log("Called Only Once");
-    fetchData();
+    // fetchData();
     fetchInfluencers();
-    fetchCountryUsers();
+    // fetchCountryUsers();
+    // fetchAccountType();
   }, []);
 
   return (
-    <>
-      {categoryData.series.length > 0 && (
-        <ApexDonutChart
-          series={categoryData.series}
-          lables={categoryData.lables}
-        />
-      )}
-      {Object.keys(countryWisePosts).length > 0 && (
-        <ApexBarChart countryWisePostsObj={countryWisePosts} />
+    <EuiFlexGroup direction="column">
+      <EuiFlexGroup>
+        <EuiFlexItem grow={1}>
+          <EuiPanel>
+            <EuiFlexGroup>
+              <EuiFlexItem>
+                <EuiFlexGroup direction="column">
+                  <EuiText
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "35px",
+                      color: "powderblue",
+                      display: "flex",
+                      textAlign: "center",
+                    }}
+                  >
+                    Business Account
+                  </EuiText>
+                  <EuiText
+                    style={{
+                      color: "#3ea6fb",
+                      fontSize: "xxx-large",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: "56px",
+                    }}
+                  >
+                    {businessAccCount}
+                  </EuiText>
+                </EuiFlexGroup>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiFlexGroup direction="column">
+                  <EuiText
+                    style={{
+                      fontSize: "30px",
+                      color: "#82ef82",
+                      fontWeight: "bold",
+                      display: "flex",
+                      textAlign: "center",
+                    }}
+                  >
+                    Non-Business Account
+                  </EuiText>
+                  <EuiText
+                    style={{
+                      color: "rgb(93, 240, 12)",
+                      fontSize: "xxx-large",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: "56px",
+                    }}
+                  >
+                    {nonBusinessAccCount}
+                  </EuiText>
+                </EuiFlexGroup>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </EuiPanel>
+        </EuiFlexItem>
+        {categoryData.series.length > 0 && (
+          <EuiFlexItem grow={1}>
+            <EuiPanel>
+              <EuiText
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontSize: "26px",
+                  color: "#a69d9d",
+                  fontWeight: "500",
+                }}
+              >
+                {" "}
+                Type of post{" "}
+              </EuiText>
+
+              <ApexDonutChart
+                series={categoryData.series}
+                lables={categoryData.lables}
+              />
+            </EuiPanel>
+          </EuiFlexItem>
+        )}
+        {Object.keys(followersWiseUsers).length > 0 && (
+          <EuiFlexItem grow={1}>
+            <EuiPanel>
+              <EuiText
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontSize: "26px",
+                  color: "#a69d9d",
+                  fontWeight: "500",
+                }}
+              >
+                Followers Distribution
+              </EuiText>
+              <ApexPieChart followersWiseUsers={followersWiseUsers} />
+            </EuiPanel>
+          </EuiFlexItem>
+        )}
+      </EuiFlexGroup>
+      {Object.keys(countryWiseUsers).length > 0 && (
+        <EuiFlexItem>
+          <EuiPanel>
+            <EuiText
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                fontSize: "26px",
+                color: "#a69d9d",
+                fontWeight: "500",
+              }}
+            >
+              Countries with the most instagram users
+            </EuiText>
+            <ApexBarChart
+              countryWiseUsersObj={countryWiseUsers}
+              countryWisePostObj={countryWisePostCount}
+            />
+          </EuiPanel>
+        </EuiFlexItem>
       )}
       {Object.keys(followersWiseUsers).length > 0 && (
-        <>
-          <ApexPieChart followersWiseUsers={followersWiseUsers} />
-          <ApexComboChart profileData={profileData} />
-        </>
+        <EuiFlexItem>
+          <EuiPanel>
+            <EuiText
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                fontSize: "26px",
+                color: "#a69d9d",
+                fontWeight: "500",
+              }}
+            >
+              Instagram influencers
+            </EuiText>
+            <ApexComboChart profileData={profileData} />
+          </EuiPanel>
+        </EuiFlexItem>
       )}
-    </>
+    </EuiFlexGroup>
   );
 };
 

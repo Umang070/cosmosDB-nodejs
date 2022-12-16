@@ -8,12 +8,12 @@ const ApexComboChart = (props) => {
         type: "column",
         data: props.profileData.followersData
           .sort((a, b) => b - a)
-          .slice(0, 12),
+          .slice(0, 11),
       },
       {
         name: "No of Post",
         type: "line",
-        data: props.profileData.postData.sort((a, b) => b - a).slice(0, 12),
+        data: props.profileData.postData.sort((a, b) => b - a).slice(0, 11),
       },
     ],
     options: {
@@ -24,14 +24,11 @@ const ApexComboChart = (props) => {
       stroke: {
         width: [0, 4],
       },
-      title: {
-        text: "Instagram influencers",
-      },
       dataLabels: {
         enabled: true,
         enabledOnSeries: [1],
       },
-      labels: props.profileData.lables.slice(0, 12),
+      labels: props.profileData.lables.slice(0, 11),
       //   xaxis: {
       //     type: 'datetime'
       //   },

@@ -1,15 +1,25 @@
 import ReactApexChart from "react-apexcharts";
 
 const ApexBarChart = (props) => {
-  const sortedObj = Object.entries(props.countryWisePostsObj)
+  const sortedObj = Object.entries(props.countryWiseUsersObj)
     .sort(([, a], [, b]) => b - a)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+  const sortedPosts = Object.entries(props.countryWisePostObj)
+    .sort(([, a], [, b]) => b - a)
+    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+
   const series1 = Object.values(sortedObj);
   const lables = Object.keys(sortedObj);
+  const series2 = Object.values(sortedPosts);
   const o = {
     series: [
       {
-        data: series1.slice(0, 10),
+        data: series1.slice(0, 12),
+        name: "Users",
+      },
+      {
+        data: series2.slice(0, 12),
+        name: "Posts",
       },
     ],
     options: {
@@ -17,28 +27,36 @@ const ApexBarChart = (props) => {
         type: "bar",
         height: 350,
       },
-      title: {
-        text: "Countries with the most instagram users",
-      },
       plotOptions: {
         bar: {
           borderRadius: 4,
           horizontal: false,
+          columnWidth: "70%",
         },
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"],
+      },
+      fill: {
+        opacity: 1,
+      },
+
       xaxis: {
-        categories: lables.slice(0, 10),
-        title: {
-          text: "Country names",
-        },
+        categories: lables.slice(0, 12),
       },
       yaxis: {
         title: {
-          text: "No of Users",
+          text: "Count",
         },
+      },
+      tooltip: {
+        shared: true,
+        intersect: false,
       },
     },
   };
@@ -49,7 +67,7 @@ const ApexBarChart = (props) => {
         options={o.options}
         series={o.series}
         type="bar"
-        height={420}
+        height={450}
       />
     </div>
   );
