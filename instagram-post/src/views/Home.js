@@ -135,8 +135,8 @@ const Home = () => {
   useEffect(() => {
     console.log("Called Only Once");
     // fetchData();
-    fetchInfluencers();
-    // fetchCountryUsers();
+    // fetchInfluencers();
+    fetchCountryUsers();
     // fetchAccountType();
   }, []);
 

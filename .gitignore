@@ -1,3 +1,11 @@
+node_modules
+eight_chunk.json
+five_chunk.json
+four_chunk.json
+nine_chunk.json
+second_chunk.json
+seven_chunk.json
+six_chunk.json
 /instagram_post/node_modules
 /server/.env
 /server/node_modules

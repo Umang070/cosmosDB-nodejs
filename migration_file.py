@@ -11,5 +11,5 @@ def upload(path,name):
         client.upload_blob(data)
     print("done")
     
-# upload('seven_chunk.json',"seven_chunk.json")
-# upload('eight_chunk.json',"eight_chunk.json")
+# upload('second_chunk.json',"second_chunk.json")
+# upload('third_chunk.json',"thirds_chunk.json")

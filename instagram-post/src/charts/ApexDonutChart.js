@@ -5,7 +5,7 @@ const ApexDonutChart = (props) => {
     chart: {
       type: "donut",
     },
-    labels: ["Image", "Video"],
+    labels: ["Image", "Video", "Multi"],
     dataLabels: {
       enabled: true,
       formatter: function (val) {

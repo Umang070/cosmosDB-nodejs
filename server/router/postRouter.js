@@ -2,6 +2,8 @@ import express from "express";
 const router = express.Router();
 import { cosmosClient } from "../appController/appController.js";
 import { appConfig } from "../appConfig/config.js";
+import { MongoClient } from "mongodb";
+const url = "mongodb://localhost:27017/";
 
 const container = cosmosClient
   .database(appConfig.databaseId)
@@ -13,7 +15,7 @@ router.get("/getPostCount", async (req, res) => {
         enableCrossPartitionQuery: true,
       })
       .toArray();
-    console.log("122222221", results[0]);
+    console.log(results[0]);
     res.send(results[0]);
   } catch (error) {
     console.log(error);
@@ -22,6 +24,7 @@ router.get("/getPostCount", async (req, res) => {
 });
 router.get("/getPostCategory", async (req, res) => {
   try {
+    const start_of_cosmos = Date.now()
     const { result: results } = await container.items
       .query(
         "SELECT VALUE root FROM (SELECT COUNT(c.post_type), c.post_type FROM c GROUP BY c.post_type) as root",
@@ -31,6 +34,25 @@ router.get("/getPostCategory", async (req, res) => {
       )
       .toArray();
     console.log("122222221", results[0]);
+    const end_of_cosmos = Date.now()
+    console.log("cosmos time: ")
+    console.log(end_of_cosmos-start_of_cosmos)
+    const start_of_mongo = Date.now()
+    MongoClient.connect(url, (err, db) => {
+        if (err)
+          throw err;
+        var dbo = db.db("insta");
+        dbo.collection("instadata").aggregate([
+          { $group: { _id: "$post_type", count: { $sum: 1 } } },
+        ]).toArray(function (err, result) {
+        if (err)
+          throw err;
+        db.close();
+        const end_of_mongo = Date.now();
+        console.log("mongoDB time: ")
+        console.log(end_of_mongo - start_of_mongo);
+      });
+      });
     res.send(results);
   } catch (error) {
     console.log(error);

@@ -31,7 +31,7 @@ const ApexBarChart = (props) => {
         bar: {
           borderRadius: 4,
           horizontal: false,
-          columnWidth: "70%",
+          columnWidth: "80%",
         },
       },
       dataLabels: {

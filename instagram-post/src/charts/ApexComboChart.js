@@ -51,7 +51,16 @@ const ApexComboChart = (props) => {
         {
           opposite: true,
           title: {
-            text: "No of Post",
+            text: "No of Post (thousands)",
+          },
+          labels: {
+            formatter: function (value) {
+              var val = Math.abs(value);
+              if (val >= 1000) {
+                val = (val / 1000).toFixed(0) + " k";
+              }
+              return val;
+            },
           },
         },
       ],
