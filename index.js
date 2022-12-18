@@ -32,7 +32,7 @@ app.get('/', async (req, res) => {
     // const newItemId = Math.floor(Math.random() * 1000 + 10).toString();
     // let documentDefinition =  {"post_id":"Bsgwm-oFWhX","cts_x":"2019-01-11 17:58:02.000","post_type":1,"number_likes":42,"number_comments":0,"profile_name":"serenazilio.mua","following":949,"followers":522,"n_posts":451,"is_business_account":true,"name":"La Proseccheria","dir_city_name":"Padua","dir_country_name":"Italy","lat":11.87435,"lng":45.40847,"cts_y":"2019-05-26 16:48:28.205"};
     // Add a new item to the container
-    console.log("** Create item **");
+    console.log("** Comparision **");
     //to add data to container
     // var json = require('./five_chunk.json')
     // for (let i = 0; i < json.length; i++) {
@@ -42,7 +42,8 @@ app.get('/', async (req, res) => {
     const {result:results} = await container.items.query("SELECT * FROM c WHERE c.post_id='BwrBVceAQrb'", {enableCrossPartitionQuery: true}).toArray();
     console.log(results);
     end_of_cosmos = Date.now()
-    console.log("cosmos time: "+end_of_cosmos-start_of_cosmos)
+    console.log("cosmos time: ")
+    console.log(end_of_cosmos-start_of_cosmos)
     start_of_mongo = Date.now()
     MongoClient.connect(url, (err, db) => {
         if (err)
@@ -53,7 +54,8 @@ app.get('/', async (req, res) => {
           throw err;
         db.close();
         end_of_mongo = Date.now();
-        console.log("mongoDB time: " +end_of_mongo - start_of_mongo);
+        console.log("mongoDB time: ")
+        console.log(end_of_mongo - start_of_mongo);
       });
       });
     
