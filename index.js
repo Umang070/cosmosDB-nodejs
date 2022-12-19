@@ -39,7 +39,7 @@ app.get('/', async (req, res) => {
     //   count++
     //   const createResponse = await container.items.create(json[i]);
     // }
-    const {result:results} = await container.items.query("SELECT * FROM c WHERE c.post_id='BwrBVceAQrb'", {enableCrossPartitionQuery: true}).toArray();
+    const {result:results} = await container.items.query("SELECT * FROM c WHERE c.post_id='BwxDyPfndJS'", {enableCrossPartitionQuery: true}).toArray();
     console.log(results);
     end_of_cosmos = Date.now()
     console.log("cosmos time: ")
@@ -49,7 +49,7 @@ app.get('/', async (req, res) => {
         if (err)
           throw err;
         var dbo = db.db("insta");
-        dbo.collection("instadata").find({ post_id: "BwrBVceAQrb" }).toArray(function (err, result) {
+        dbo.collection("instadata").find({ post_id: "BwxDyPfndJS" }).toArray(function (err, result) {
         if (err)
           throw err;
         db.close();
