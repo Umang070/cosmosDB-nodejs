@@ -1,0 +1,5 @@
+This project presents a sophisticated data-driven web application that seamlessly integrates React for frontend visualization, NodeJS for backend data retrieval, and Microsoft's Cosmos DB for data storage. Leveraging the fault tolerance, partitioning, replication, and global distribution advantages of Cosmos DB, this solution ensures reliable and scalable data management.
+
+The project employs the Message Passing Interface (MPI) for data pre-processing and cleaning, effectively removing unnecessary columns, handling NULL values, and merging disparate data sources. The resulting dataset, enhanced for accuracy, is then visualized through interactive graphs and charts within the React web application.
+
+The web app's user-friendly interface allows stakeholders to navigate and interact with data insights effortlessly. By combining Cosmos DB's capabilities, MPI-driven data pre-processing, and React-based visualization, this project empowers organizations to derive valuable insights from their data, facilitating informed decision-making and fostering a proactive approach to problem-solving.
